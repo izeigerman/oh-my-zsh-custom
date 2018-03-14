@@ -18,7 +18,7 @@ find_branch() {
     if [[ -d "$repo_dir" ]]; then
       cd $repo_dir
       test "$(git status 2> /dev/null | grep $pattern)" && print -P "%F{white}${d%/}%f: %F{green}$(git status | grep --color=never  On | awk -F ' ' '{ print $3 }')%f"
-      cd ..
+      cd $find_dir
     fi
   done
 

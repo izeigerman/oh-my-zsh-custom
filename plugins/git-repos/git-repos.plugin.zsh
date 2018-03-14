@@ -104,7 +104,7 @@ function git-repos-status() {
     if [[ -d "$repo_dir" ]]; then
       cd $repo_dir
       test "$(git status 2> /dev/null | grep $pattern)" && vcs_info && print -P "%F{white}${d%/}%f: $(_fetch_repo_info verbose)%f"
-      cd $original_dir
+      cd $find_dir
     fi
   done
 
