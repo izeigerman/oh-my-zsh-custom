@@ -85,17 +85,22 @@ function _fetch_repo_info() {
     fi
 }
 
-function git-repos-status() {
+function git-repos() {
   original_dir="$(pwd)"
 
+  verbose=""
+  if [[ "$1" = "true" ]]; then
+    verbose="verbose"
+  fi
+
   pattern=".*"
-  if [[ $# -gt 0 ]]; then
-    pattern="$1"
+  if [[ $# -gt 1 ]]; then
+    pattern="$2"
   fi
 
   find_dir="."
-  if [[ $# -gt 1 ]]; then
-    find_dir="$2"
+  if [[ $# -gt 2 ]]; then
+    find_dir="$3"
   fi
 
   cd $find_dir
@@ -103,12 +108,13 @@ function git-repos-status() {
     repo_dir="./${d}"
     if [[ -d "$repo_dir" ]]; then
       cd $repo_dir
-      test "$(git status 2> /dev/null | grep $pattern)" && vcs_info && print -P "%F{white}${d%/}%f: $(_fetch_repo_info verbose)%f"
-      cd $find_dir
+      test "$(git status 2> /dev/null | grep $pattern)" && vcs_info && print -P "%F{white}${d%/}%f: $(_fetch_repo_info $verbose)%f"
+      cd ..
     fi
   done
 
   cd $original_dir
 }
 
-alias grs='git-repos-status'
+alias grepos='git-repos false'
+alias greposv='git-repos true'
